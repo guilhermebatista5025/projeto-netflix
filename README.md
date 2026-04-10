@@ -29,6 +29,7 @@ O projeto foi desenvolvido com o objetivo de praticar construção de interfaces
 * HTML5
 * CSS3
 * JavaScript (Vanilla ou React, se aplicável)
+* API (TMDB)
 
 ---
 
@@ -64,9 +65,7 @@ projeto-netflix/
 │   └── style.css
 ├── /js
 │   └── script.js
-├── /assets
-│   ├── images
-│   └── icons
+
 ```
 
 ---
@@ -92,6 +91,7 @@ Este projeto foi desenvolvido para:
 * Praticar desenvolvimento frontend
 * Criar interfaces modernas
 * Evoluir habilidades em UI/UX
+* Melhorar conhecimentos sobre API
 
 ---
 
@@ -102,7 +102,6 @@ Este projeto foi desenvolvido para:
 * Player de vídeo integrado
 * Backend com banco de dados
 * Recomendações personalizadas
-* Implementação de APIS
 
 ---
 
