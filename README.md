@@ -45,7 +45,8 @@ O projeto foi desenvolvido com o objetivo de praticar construção de interfaces
 
 ## 📸 Preview
 
-*(adicione aqui prints do projeto)*
+*<img width="1908" height="956" alt="image" src="https://github.com/user-attachments/assets/6eb4b10d-1a60-47d4-a456-9b112b5b3096" />
+*
 
 ---
 
