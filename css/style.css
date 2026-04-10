@@ -1,0 +1,343 @@
+/* Configurações Gerais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #111;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* --- BARRA DE NAVEGAÇÃO (NAVBAR) --- */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 15px 4%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.5s;
+  z-index: 1000;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* --- CONTAINER DE BUSCA PREMIUM --- */
+.search-container {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4); /* Fundo mais sutil */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Borda clarinha estilo Netflix */
+    padding: 2px 10px;
+    transition: all 0.3s ease;
+    height: 35px;
+}
+
+.search-container:focus-within {
+    background: rgba(0, 0, 0, 0.9);
+    border-color: #fff;
+}
+
+.search-icon {
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+#movie-search {
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    width: 0px; /* Ele começa "fechado" */
+    padding: 0;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
+    font-size: 0.85rem;
+}
+
+/* Quando você clica na barra ou ela recebe foco, ela expande */
+.search-container:hover #movie-search,
+#movie-search:focus {
+    width: 200px;
+    padding: 0 10px;
+}
+
+/* --- ESTILIZAÇÃO DO SELECT (TIRANDO A CARA DE WINDOWS) --- */
+#category-filter {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    outline: none;
+    margin-left: 5px;
+    padding: 5px;
+    border-left: 1px solid rgba(255, 255, 255, 0.3); /* Divisória elegante */
+}
+
+/* Estilo para as opções dentro do select */
+#category-filter option {
+    background-color: #141414;
+    color: #fff;
+    padding: 10px;
+}
+
+/* Ajuste na nav-right para não amontoar */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+  width: 95px;
+  cursor: pointer;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  margin-left: 70px;
+  gap: 20px;
+}
+
+nav ul li {
+  color: #e5e5e5;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+nav ul li:hover {
+  color: #b3b3b3;
+}
+
+.icon {
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* Menu de Usuário e Dropdown */
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-menu img {
+  width: 32px;
+  border-radius: 4px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid #333;
+  width: 160px;
+  display: none;
+  padding: 10px 0;
+}
+
+.user-menu:hover .dropdown {
+  display: block;
+}
+
+.dropdown p {
+  font-size: 0.8rem;
+  padding: 10px 15px;
+  transition: 0.2s;
+}
+
+.dropdown p:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown hr {
+  border: none;
+  border-top: 1px solid #333;
+  margin: 5px 0;
+}
+
+/* --- BANNER PRINCIPAL --- */
+.banner {
+  background-size: cover;
+  background-position: center center;
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  padding-left: 4%;
+  position: relative;
+}
+
+.banner-content {
+  max-width: 600px;
+  z-index: 1;
+}
+
+.banner-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.banner-description {
+  font-size: 1.1rem;
+  line-height: 1.3;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.banner-buttons {
+  margin: 20px 0;
+}
+
+.banner-buttons button {
+  padding: 10px 28px;
+  border-radius: 4px;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: 0.2s;
+}
+
+.btn-play {
+  min-width: 150px; /* Garante que o botão não "encolha" ao mudar o texto */
+  background-color: white;
+  color: black;
+}
+
+.btn-play:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.btn-info {
+  background-color: rgba(109, 109, 110, 0.7);
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: rgba(109, 109, 110, 0.4);
+}
+
+.banner-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 15rem;
+  background-image: linear-gradient(
+    180deg,
+    transparent,
+    rgba(37, 37, 37, 0.61),
+    #111
+  );
+}
+
+/* --- FILEIRAS DE FILMES E ANIMAÇÃO --- */
+.container {
+  padding: 0 4%;
+  margin-top: -80px;
+  position: relative;
+  z-index: 2;
+}
+
+.row {
+  margin-bottom: 35px;
+}
+
+.row h2 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  transition: color 0.3s;
+}
+
+.row-wrapper {
+  position: relative;
+  overflow: hidden; /* Corta o que sai da área visível */
+}
+
+.row-posters {
+  display: flex;
+  padding: 20px 0;
+  /* Transition com Cubic-Bezier para o efeito de "mola" da Netflix */
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.poster {
+  max-height: 140px; /* Mantém o tamanho retangular padrão */
+  object-fit: contain;
+  margin-right: 10px;
+  transition: transform 450ms;
+  cursor: pointer;
+  border-radius: 4px;
+  flex-shrink: 0; /* IMPEDE QUE A IMAGEM AMASSE */
+}
+
+/* Estilo para a fileira de Originais (Capa Vertical) */
+.poster-large {
+  max-height: 280px;
+}
+
+.poster:hover {
+  transform: scale(1.08);
+  z-index: 5;
+}
+
+/* --- BOTÕES (SETAS DO CARROSSEL) --- */
+.handle {
+  position: absolute;
+  top: 20px;
+  height: calc(100% - 40px);
+  width: 4%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  font-size: 2rem;
+  z-index: 10;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row-wrapper:hover .handle {
+  opacity: 1;
+}
+
+.handle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  font-size: 2.5rem;
+}
+
+.handle-left {
+  left: 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.handle-right {
+  right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+/* Evita que o clique pegue no ícone e atrapalhe o JS */
+.handle i {
+  pointer-events: none;
+}

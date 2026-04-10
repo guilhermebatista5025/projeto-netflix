@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Netflix Clone - API Mode</title>
+    <link rel="icon" type="image/png" href="img/Design sem nome (5).ico">
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header id="navbar">
+      <div class="nav-left">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+          class="logo"
+        />
+        <nav>
+          <ul>
+            <li>Início</li>
+            <li>Séries</li>
+            <li>Filmes</li>
+            <li>Bombando</li>
+            <li>Minha lista</li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="nav-right">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            id="movie-search"
+            placeholder="Títulos, gente, gêneros..."
+          />
+
+          <select id="category-filter">
+            <option value="all">Todas Categorias</option>
+            <option value="originals-row">Originais</option>
+            <option value="trending-row">Recomendados</option>
+            <option value="action-row">Ação</option>
+            <option value="comedy-row">Comédia</option>
+          </select>
+        </div>
+
+        <span class="nav-item">Infantil</span>
+        <i class="fas fa-bell icon"></i>
+        <div class="user-menu">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+          />
+          <i class="fas fa-caret-down"></i>
+          <div class="dropdown">
+            <p>Sair da Netflix</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="banner" id="main-banner">
+      <div class="banner-content">
+        <h1 id="banner-title"></h1>
+        <div class="banner-buttons">
+          <button class="btn-play" id="btn-play-main">
+            <i class="fas fa-play"></i> Assistir
+          </button>
+          <button class="btn-info">
+            <i class="fas fa-info-circle"></i> Mais Informações
+          </button>
+        </div>
+        <p id="banner-desc"></p>
+      </div>
+      <div class="banner-fade"></div>
+    </section>
+
+    <main class="container">
+      <div class="row">
+        <h2>Originais Netflix</h2>
+        <div class="row-wrapper">
+          <button class="handle handle-left">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <div class="row-posters" id="originals-row"></div>
+          <button class="handle handle-right">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <h2>Recomendados</h2>
+        <div class="row-wrapper">
+          <button class="handle handle-left">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <div class="row-posters" id="trending-row"></div>
+          <button class="handle handle-right">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
