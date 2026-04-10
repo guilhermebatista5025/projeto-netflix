@@ -51,7 +51,7 @@ O projeto foi desenvolvido com o objetivo de praticar construção de interfaces
 
 ## 🔗 Deploy
 
-*(adicione aqui o link — Vercel, Netlify, etc.)*
+*https://projeto-netflix-livid.vercel.app/*
 
 ---
 
