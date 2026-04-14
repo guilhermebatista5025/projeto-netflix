@@ -1,109 +1,180 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Netflix Clone - API Mode</title>
-    <link rel="icon" type="image/png" href="img/Design sem nome (5).ico">
-    <link rel="stylesheet" href="css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <header id="navbar">
-      <div class="nav-left">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
-          class="logo"
-        />
-        <nav>
-          <ul>
-            <li>Início</li>
-            <li>Séries</li>
-            <li>Filmes</li>
-            <li>Bombando</li>
-            <li>Minha lista</li>
-          </ul>
-        </nav>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Netflix Clone</title>
+  <link rel="shortcut icon" href="img/netflix.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header id="navbar">
+    <div class="nav-left">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="logo" alt="Netflix" />
+      <!-- Menu desktop -->
+      <nav class="nav-desktop">
+        <ul>
+          <li class="active">Início</li>
+          <li>Séries</li>
+          <li>Filmes</li>
+          <li>Bombando</li>
+          <li>Minha lista</li>
+        </ul>
+      </nav>
+      <!-- Menu mobile: hamburguer -->
+      <div class="nav-mobile-menu">
+        <button class="hamburger" id="hamburger-btn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
+    </div>
 
-      <div class="nav-right">
-        <div class="search-container">
-          <i class="fas fa-search search-icon"></i>
-          <input
-            type="text"
-            id="movie-search"
-            placeholder="Títulos, gente, gêneros..."
-          />
-
-          <select id="category-filter">
-            <option value="all">Todas Categorias</option>
-            <option value="originals-row">Originais</option>
-            <option value="trending-row">Recomendados</option>
-            <option value="action-row">Ação</option>
-            <option value="comedy-row">Comédia</option>
-          </select>
-        </div>
-
-        <span class="nav-item">Infantil</span>
-        <i class="fas fa-bell icon"></i>
-        <div class="user-menu">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
-          />
-          <i class="fas fa-caret-down"></i>
-          <div class="dropdown">
-            <p>Sair da Netflix</p>
+    <div class="nav-right">
+      <div class="search-container" id="search-container">
+        <i class="fas fa-search search-icon" id="search-icon"></i>
+        <input type="text" id="movie-search" placeholder="Buscar títulos..." />
+      </div>
+      <i class="fas fa-bell icon" title="Notificações"></i>
+      <div class="user-menu">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Avatar" />
+        <i class="fas fa-caret-down"></i>
+        <div class="dropdown">
+          <div class="dropdown-user">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Avatar" />
+            <span>Meu perfil</span>
           </div>
+          <hr />
+          <p><i class="fas fa-user"></i> Gerenciar perfis</p>
+          <p><i class="fas fa-cog"></i> Configurações</p>
+          <hr />
+          <p class="logout"><i class="fas fa-sign-out-alt"></i> Sair da Netflix</p>
         </div>
       </div>
-    </header>
+    </div>
 
-    <section class="banner" id="main-banner">
-      <div class="banner-content">
-        <h1 id="banner-title"></h1>
-        <div class="banner-buttons">
-          <button class="btn-play" id="btn-play-main">
-            <i class="fas fa-play"></i> Assistir
-          </button>
-          <button class="btn-info">
-            <i class="fas fa-info-circle"></i> Mais Informações
-          </button>
-        </div>
-        <p id="banner-desc"></p>
+    <!-- Drawer mobile -->
+    <div class="mobile-drawer" id="mobile-drawer">
+      <ul>
+        <li class="active">Início</li>
+        <li>Séries</li>
+        <li>Filmes</li>
+        <li>Bombando</li>
+        <li>Minha lista</li>
+        <li>Infantil</li>
+      </ul>
+      <div class="drawer-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="mobile-search" placeholder="Buscar..." />
+        <select id="mobile-category-filter">
+          <option value="all">Todas</option>
+          <option value="originals-row">Originais</option>
+          <option value="trending-row">Recomendados</option>
+          <option value="action-row">Ação</option>
+          <option value="comedy-row">Comédia</option>
+        </select>
       </div>
-      <div class="banner-fade"></div>
-    </section>
+    </div>
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+  </header>
 
-    <main class="container">
-      <div class="row">
-        <h2>Originais Netflix</h2>
-        <div class="row-wrapper">
-          <button class="handle handle-left">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <div class="row-posters" id="originals-row"></div>
-          <button class="handle handle-right">
-            <i class="fas fa-chevron-right"></i>
-          </button>
+  <!-- ===== BANNER ===== -->
+  <section class="banner" id="main-banner">
+    <div class="banner-content">
+      <p class="banner-label">SÉRIE ORIGINAL NETFLIX</p>
+      <h1 id="banner-title" class="banner-title"></h1>
+      <div class="banner-meta" id="banner-meta">
+        <span class="match">98% relevante</span>
+        <span class="year" id="banner-year"></span>
+        <span class="badge">HD</span>
+      </div>
+      <p id="banner-desc" class="banner-description"></p>
+      <div class="banner-buttons">
+        <button class="btn-play" id="btn-play-main">
+          <i class="fas fa-play"></i><span>Assistir</span>
+        </button>
+        <button class="btn-info">
+          <i class="fas fa-info-circle"></i><span>Mais info</span>
+        </button>
+        <button class="btn-mute" id="btn-mute" title="Mudo">
+          <i class="fas fa-volume-mute"></i>
+        </button>
+      </div>
+    </div>
+    <div class="banner-fade"></div>
+  </section>
+
+  <!-- ===== FILEIRAS ===== -->
+  <main class="container">
+
+    <div class="row" id="row-originals">
+      <h2><span class="row-label-netflix">Netflix</span> Originais</h2>
+      <div class="row-wrapper">
+        <button class="handle handle-left" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+        <div class="row-posters" id="originals-row"></div>
+        <button class="handle handle-right" aria-label="Próximo"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div class="row" id="row-trending">
+      <h2>Em Alta Esta Semana</h2>
+      <div class="row-wrapper">
+        <button class="handle handle-left" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+        <div class="row-posters" id="trending-row"></div>
+        <button class="handle handle-right" aria-label="Próximo"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div class="row" id="row-action">
+      <h2>Ação &amp; Aventura</h2>
+      <div class="row-wrapper">
+        <button class="handle handle-left" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+        <div class="row-posters" id="action-row"></div>
+        <button class="handle handle-right" aria-label="Próximo"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+    <div class="row" id="row-comedy">
+      <h2>Comédia</h2>
+      <div class="row-wrapper">
+        <button class="handle handle-left" aria-label="Anterior"><i class="fas fa-chevron-left"></i></button>
+        <div class="row-posters" id="comedy-row"></div>
+        <button class="handle handle-right" aria-label="Próximo"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ===== MODAL DE FILME ===== -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close"><i class="fas fa-times"></i></button>
+      <div class="modal-backdrop" id="modal-backdrop"></div>
+      <div class="modal-body">
+        <h2 id="modal-title"></h2>
+        <div class="modal-meta">
+          <span class="match">98% relevante</span>
+          <span id="modal-year"></span>
+          <span class="badge">HD</span>
+        </div>
+        <p id="modal-desc"></p>
+        <div class="modal-buttons">
+          <button class="btn-play"><i class="fas fa-play"></i> Assistir</button>
+          <button class="btn-info"><i class="fas fa-plus"></i> Minha lista</button>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="row">
-        <h2>Recomendados</h2>
-        <div class="row-wrapper">
-          <button class="handle handle-left">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <div class="row-posters" id="trending-row"></div>
-          <button class="handle handle-right">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-    </main>
+  <script src="js/script.js"></script>
+</body>
 
-    <script src="js/script.js"></script>
-  </body>
 </html>

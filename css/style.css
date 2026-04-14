@@ -1,321 +1,667 @@
-/* Configurações Gerais */
-* {
+/* ============================================================
+   NETFLIX CLONE — CSS MOBILE-FIRST
+   Fonte: Bebas Neue (títulos) + Barlow (corpo)
+   ============================================================ */
+
+:root {
+  --red: #e50914;
+  --red-dark: #b20710;
+  --black: #0d0d0d;
+  --surface: #141414;
+  --surface2: #1f1f1f;
+  --text: #e5e5e5;
+  --text-muted: #a0a0a0;
+  --navbar-h: 56px;
+  --radius: 4px;
+}
+
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #111;
-  color: white;
+  background: var(--black);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 15px;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* --- BARRA DE NAVEGAÇÃO (NAVBAR) --- */
+img {
+  display: block;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
 header {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
-  padding: 15px 4%;
+  height: var(--navbar-h);
+  padding: 0 4%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.5s;
-  z-index: 1000;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85), transparent);
+  transition: background 0.4s;
+  z-index: 900;
 }
 
-.nav-left,
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* --- CONTAINER DE BUSCA PREMIUM --- */
-.search-container {
-    display: flex;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.4); /* Fundo mais sutil */
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Borda clarinha estilo Netflix */
-    padding: 2px 10px;
-    transition: all 0.3s ease;
-    height: 35px;
-}
-
-.search-container:focus-within {
-    background: rgba(0, 0, 0, 0.9);
-    border-color: #fff;
-}
-
-.search-icon {
-    color: #fff;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
-#movie-search {
-    background: transparent;
-    border: none;
-    color: white;
-    outline: none;
-    width: 0px; /* Ele começa "fechado" */
-    padding: 0;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
-    font-size: 0.85rem;
-}
-
-/* Quando você clica na barra ou ela recebe foco, ela expande */
-.search-container:hover #movie-search,
-#movie-search:focus {
-    width: 200px;
-    padding: 0 10px;
-}
-
-/* --- ESTILIZAÇÃO DO SELECT (TIRANDO A CARA DE WINDOWS) --- */
-#category-filter {
-    background: transparent;
-    color: #fff;
-    border: none;
-    font-size: 0.8rem;
-    cursor: pointer;
-    outline: none;
-    margin-left: 5px;
-    padding: 5px;
-    border-left: 1px solid rgba(255, 255, 255, 0.3); /* Divisória elegante */
-}
-
-/* Estilo para as opções dentro do select */
-#category-filter option {
-    background-color: #141414;
-    color: #fff;
-    padding: 10px;
-}
-
-/* Ajuste na nav-right para não amontoar */
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+header.scrolled {
+  background: var(--surface);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.6);
 }
 
 .logo {
-  width: 95px;
+  width: 80px;
+  flex-shrink: 0;
   cursor: pointer;
 }
 
-nav ul {
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Nav desktop */
+.nav-desktop {
+  display: none;
+}
+
+.nav-desktop ul {
   display: flex;
   list-style: none;
-  margin-left: 70px;
-  gap: 20px;
+  gap: 22px;
 }
 
-nav ul li {
-  color: #e5e5e5;
-  font-size: 0.85rem;
+.nav-desktop ul li {
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
   cursor: pointer;
-  transition: 0.3s;
+  transition: color 0.2s;
+  white-space: nowrap;
 }
 
-nav ul li:hover {
-  color: #b3b3b3;
+.nav-desktop ul li:hover,
+.nav-desktop ul li.active {
+  color: #fff;
+}
+
+.nav-desktop ul li.active {
+  border-bottom: 2px solid var(--red);
+  padding-bottom: 2px;
+}
+
+/* Hamburger mobile */
+.nav-mobile-menu {
+  display: flex;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Search */
+.search-container {
+  display: flex;
+  align-items: center;
+  border: 1px solid transparent;
+  height: 32px;
+  padding: 0 8px;
+  gap: 6px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.search-container.open {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.search-icon {
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+#movie-search {
+  background: transparent;
+  border: none;
+  color: #fff;
+  outline: none;
+  width: 0;
+  font-size: 0.82rem;
+  font-family: 'Barlow', sans-serif;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-container.open #movie-search {
+  width: 160px;
 }
 
 .icon {
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
+  color: var(--text);
+  transition: color 0.2s;
 }
 
-/* Menu de Usuário e Dropdown */
+.icon:hover {
+  color: #fff;
+}
+
+/* User menu */
 .user-menu {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
 }
 
-.user-menu img {
-  width: 32px;
-  border-radius: 4px;
+.user-menu>img {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.user-menu .fa-caret-down {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+}
+
+.user-menu:hover .fa-caret-down {
+  transform: rotate(180deg);
 }
 
 .dropdown {
   position: absolute;
-  top: 45px;
+  top: calc(100% + 12px);
   right: 0;
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid #333;
-  width: 160px;
+  background: rgba(10, 10, 10, 0.97);
+  border: 1px solid #2a2a2a;
+  width: 190px;
   display: none;
-  padding: 10px 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
 }
 
 .user-menu:hover .dropdown {
   display: block;
 }
 
-.dropdown p {
-  font-size: 0.8rem;
-  padding: 10px 15px;
-  transition: 0.2s;
+.dropdown-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
 }
 
-.dropdown p:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.dropdown-user img {
+  width: 36px;
+  border-radius: var(--radius);
+}
+
+.dropdown-user span {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 .dropdown hr {
   border: none;
-  border-top: 1px solid #333;
-  margin: 5px 0;
+  border-top: 1px solid #2a2a2a;
 }
 
-/* --- BANNER PRINCIPAL --- */
-.banner {
-  background-size: cover;
-  background-position: center center;
-  height: 85vh;
+.dropdown p {
   display: flex;
   align-items: center;
-  padding-left: 4%;
-  position: relative;
-}
-
-.banner-content {
-  max-width: 600px;
-  z-index: 1;
-}
-
-.banner-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
-}
-
-.banner-description {
-  font-size: 1.1rem;
-  line-height: 1.3;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.banner-buttons {
-  margin: 20px 0;
-}
-
-.banner-buttons button {
-  padding: 10px 28px;
-  border-radius: 4px;
-  border: none;
-  font-size: 1.1rem;
-  font-weight: bold;
+  gap: 10px;
+  font-size: 0.8rem;
+  padding: 11px 14px;
+  color: var(--text-muted);
   cursor: pointer;
-  margin-right: 10px;
-  transition: 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
-.btn-play {
-  min-width: 150px; /* Garante que o botão não "encolha" ao mudar o texto */
-  background-color: white;
-  color: black;
+.dropdown p:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
 }
 
-.btn-play:hover {
-  background-color: rgba(255, 255, 255, 0.75);
+.dropdown p.logout:hover {
+  color: var(--red);
 }
 
-.btn-info {
-  background-color: rgba(109, 109, 110, 0.7);
-  color: white;
+.dropdown p i {
+  width: 14px;
+  text-align: center;
 }
 
-.btn-info:hover {
-  background-color: rgba(109, 109, 110, 0.4);
+/* ===== MOBILE DRAWER ===== */
+.mobile-drawer {
+  position: fixed;
+  top: var(--navbar-h);
+  left: 0;
+  width: 260px;
+  height: calc(100vh - var(--navbar-h));
+  background: rgba(10, 10, 10, 0.98);
+  border-right: 1px solid #222;
+  transform: translateX(-100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 800;
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+.mobile-drawer.open {
+  transform: translateX(0);
+}
+
+.mobile-drawer ul {
+  list-style: none;
+}
+
+.mobile-drawer ul li {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 14px 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.mobile-drawer ul li:hover,
+.mobile-drawer ul li.active {
+  color: #fff;
+  border-left-color: var(--red);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.drawer-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 16px 0;
+  background: var(--surface2);
+  border: 1px solid #333;
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.drawer-search i {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.drawer-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 0.85rem;
+  font-family: 'Barlow', sans-serif;
+  min-width: 80px;
+}
+
+.drawer-search select {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-top: 1px solid #333;
+  padding-top: 8px;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.drawer-search select option {
+  background: #1a1a1a;
+}
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 799;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================================================
+   BANNER
+   ============================================================ */
+.banner {
+  position: relative;
+  width: 100%;
+  /* Mobile: altura compacta */
+  height: 56vw;
+  min-height: 260px;
+  max-height: 380px;
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Gradiente do banner */
+.banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.1) 60%),
+    linear-gradient(to top, var(--black) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 100%);
 }
 
 .banner-fade {
   position: absolute;
-  bottom: 0;
+  bottom: -1px;
   left: 0;
   width: 100%;
-  height: 15rem;
-  background-image: linear-gradient(
-    180deg,
-    transparent,
-    rgba(37, 37, 37, 0.61),
-    #111
-  );
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--black));
+  pointer-events: none;
 }
 
-/* --- FILEIRAS DE FILMES E ANIMAÇÃO --- */
-.container {
-  padding: 0 4%;
-  margin-top: -80px;
+.banner-content {
   position: relative;
   z-index: 2;
+  padding: 0 4% 28px;
+  max-width: 100%;
+}
+
+.banner-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.banner-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.8rem, 6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  margin-bottom: 8px;
+}
+
+.banner-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.match {
+  color: #46d369;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.year {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.badge {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  letter-spacing: 0.05em;
+}
+
+.banner-description {
+  display: none;
+  /* oculto no mobile */
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 380px;
+  margin-bottom: 14px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.banner-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-play,
+.btn-info {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-play {
+  background: #fff;
+  color: #000;
+}
+
+.btn-play:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.btn-info {
+  background: rgba(109, 109, 110, 0.65);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.btn-info:hover {
+  background: rgba(109, 109, 110, 0.4);
+}
+
+.btn-mute {
+  width: 34px;
+  height: 34px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  margin-left: auto;
+}
+
+.btn-mute:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================================
+   CONTAINER + FILEIRAS
+   ============================================================ */
+.container {
+  padding: 0 0 48px;
+  position: relative;
+  z-index: 2;
+  margin-top: -10px;
 }
 
 .row {
-  margin-bottom: 35px;
+  margin-bottom: 8px;
+  padding: 0 4%;
 }
 
 .row h2 {
-  font-size: 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
   margin-bottom: 10px;
   transition: color 0.3s;
+  cursor: default;
+}
+
+.row:hover h2 {
+  color: #fff;
+}
+
+.row-label-netflix {
+  color: var(--red);
 }
 
 .row-wrapper {
   position: relative;
-  overflow: hidden; /* Corta o que sai da área visível */
+  /* Overflow nos lados para setas ficarem dentro */
+  overflow: hidden;
 }
 
 .row-posters {
   display: flex;
-  padding: 20px 0;
-  /* Transition com Cubic-Bezier para o efeito de "mola" da Netflix */
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  gap: 6px;
+  padding: 4px 0 8px;
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
 }
 
+/* POSTER PADRÃO (backdrop 16:9) */
 .poster {
-  max-height: 140px; /* Mantém o tamanho retangular padrão */
-  object-fit: contain;
-  margin-right: 10px;
-  transition: transform 450ms;
+  flex-shrink: 0;
+  width: 140px;
+  height: 79px;
+  object-fit: cover;
+  border-radius: var(--radius);
   cursor: pointer;
-  border-radius: 4px;
-  flex-shrink: 0; /* IMPEDE QUE A IMAGEM AMASSE */
-}
-
-/* Estilo para a fileira de Originais (Capa Vertical) */
-.poster-large {
-  max-height: 280px;
+  transition: transform 350ms ease, box-shadow 350ms ease;
+  background: var(--surface2);
 }
 
 .poster:hover {
-  transform: scale(1.08);
+  transform: scale(1.06);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   z-index: 5;
 }
 
-/* --- BOTÕES (SETAS DO CARROSSEL) --- */
+/* POSTER GRANDE (vertical 2:3 — Originais) */
+.poster-large {
+  width: 110px;
+  height: 165px;
+}
+
+/* Setas do carrossel */
 .handle {
   position: absolute;
-  top: 20px;
-  height: calc(100% - 40px);
-  width: 4%;
-  background: rgba(0, 0, 0, 0.5);
+  top: 4px;
+  height: calc(100% - 12px);
+  width: 36px;
+  background: rgba(0, 0, 0, 0.55);
   border: none;
-  color: white;
-  font-size: 2rem;
+  color: #fff;
+  font-size: 1rem;
   z-index: 10;
   cursor: pointer;
-  opacity: 0;
-  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transition: all 0.25s;
+  backdrop-filter: blur(4px);
+}
+
+.handle i {
+  pointer-events: none;
 }
 
 .row-wrapper:hover .handle {
@@ -323,21 +669,324 @@ nav ul li:hover {
 }
 
 .handle:hover {
-  background: rgba(0, 0, 0, 0.8);
-  font-size: 2.5rem;
+  background: rgba(0, 0, 0, 0.85);
+  font-size: 1.1rem;
 }
 
 .handle-left {
   left: 0;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
 }
 
 .handle-right {
   right: 0;
-  border-radius: 4px 0 0 4px;
+  border-radius: var(--radius) 0 0 var(--radius);
 }
 
-/* Evita que o clique pegue no ícone e atrapalhe o JS */
-.handle i {
+/* Classes de filtro */
+.hidden-movie {
+  display: none !important;
+}
+
+.hidden-row {
+  display: none !important;
+}
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
   pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  position: relative;
+  background: var(--surface);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow: hidden;
+  overflow-y: auto;
+  transform: scale(0.92);
+  transition: transform 0.3s;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+}
+
+.modal-overlay.open .modal {
+  transform: scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  background: rgba(30, 30, 30, 0.85);
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(60, 60, 60, 0.95);
+}
+
+.modal-backdrop {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center 20%;
+}
+
+.modal-body {
+  padding: 18px 20px 24px;
+}
+
+.modal-body h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.modal-body p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   TABLET — 600px+
+   ============================================================ */
+@media (min-width: 600px) {
+  :root {
+    --navbar-h: 60px;
+  }
+
+  .logo {
+    width: 88px;
+  }
+
+  /* Banner maior */
+  .banner {
+    height: 50vw;
+    max-height: 480px;
+    background-position: center 25%;
+  }
+
+  .banner-description {
+    display: block;
+  }
+
+  .banner-title {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+  }
+
+  .btn-play,
+  .btn-info {
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  /* Posters maiores */
+  .poster {
+    width: 180px;
+    height: 101px;
+  }
+
+  .poster-large {
+    width: 130px;
+    height: 195px;
+  }
+
+  .row-posters {
+    gap: 8px;
+  }
+
+  .row h2 {
+    font-size: 1rem;
+  }
+
+  .handle {
+    width: 44px;
+    font-size: 1.1rem;
+  }
+}
+
+/* ============================================================
+   DESKTOP — 900px+
+   ============================================================ */
+@media (min-width: 900px) {
+  :root {
+    --navbar-h: 68px;
+  }
+
+  .logo {
+    width: 100px;
+  }
+
+  /* Mostra nav desktop, esconde hamburger */
+  .nav-desktop {
+    display: flex;
+  }
+
+  .nav-mobile-menu {
+    display: none;
+  }
+
+  /* Busca desktop expande no hover */
+  #movie-search {
+    width: 0;
+  }
+
+  .search-container:hover #movie-search,
+  .search-container.open #movie-search {
+    width: 180px;
+  }
+
+  /* Banner full */
+  .banner {
+    height: 82vh;
+    min-height: 480px;
+    max-height: 780px;
+    background-position: center center;
+    align-items: center;
+  }
+
+  .banner::before {
+    background:
+      linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 55%, transparent 100%),
+      linear-gradient(to top, var(--black) 0%, transparent 40%);
+  }
+
+  .banner-content {
+    padding: 0 5% 0;
+    max-width: 560px;
+  }
+
+  .banner-label {
+    font-size: 0.75rem;
+  }
+
+  .banner-description {
+    display: block;
+    font-size: 1rem;
+    max-width: 440px;
+    margin-bottom: 20px;
+  }
+
+  .banner-buttons {
+    gap: 12px;
+  }
+
+  .btn-play,
+  .btn-info {
+    padding: 11px 28px;
+    font-size: 1rem;
+  }
+
+  /* Posters desktop */
+  .poster {
+    width: 220px;
+    height: 124px;
+  }
+
+  .poster-large {
+    width: 160px;
+    height: 240px;
+  }
+
+  .row-posters {
+    gap: 10px;
+  }
+
+  .row h2 {
+    font-size: 1.2rem;
+  }
+
+  .row {
+    margin-bottom: 12px;
+  }
+
+  /* Handle aparece só no hover */
+  .handle {
+    opacity: 0;
+    width: 52px;
+    font-size: 1.3rem;
+  }
+
+  .row-wrapper:hover .handle {
+    opacity: 1;
+  }
+
+  .container {
+    margin-top: -60px;
+  }
+}
+
+/* ============================================================
+   WIDE — 1280px+
+   ============================================================ */
+@media (min-width: 1280px) {
+  .poster {
+    width: 240px;
+    height: 135px;
+  }
+
+  .poster-large {
+    width: 180px;
+    height: 270px;
+  }
+
+  .banner {
+    height: 85vh;
+  }
+
+  .banner-content {
+    max-width: 620px;
+  }
+
+  .banner-description {
+    font-size: 1.05rem;
+    max-width: 480px;
+  }
 }
