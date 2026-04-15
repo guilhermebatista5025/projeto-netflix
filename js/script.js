@@ -17,6 +17,112 @@ const scrollPos = {};
 let bannerMovie = null;
 
 /* ============================================================
+   BUSCAR TRAILER (YouTube)
+   ============================================================ */
+async function fetchTrailer(id, type = 'movie') {
+  try {
+    const res = await fetch(`${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=pt-BR`);
+    const data = await res.json();
+
+    let video = data.results?.find(v =>
+      v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser')
+    );
+
+    /* fallback: busca em inglês se não achar em PT */
+    if (!video) {
+      const res2 = await fetch(`${BASE_URL}/${type}/${id}/videos?api_key=${API_KEY}&language=en-US`);
+      const data2 = await res2.json();
+      video = data2.results?.find(v =>
+        v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser')
+      );
+    }
+
+    return video ? video.key : null;
+  } catch (err) {
+    console.error('Erro ao buscar trailer:', err);
+    return null;
+  }
+}
+
+/* ============================================================
+   PLAYER DE TRAILER — TELA CHEIA
+   ============================================================ */
+function createTrailerPlayer() {
+  const overlay = document.createElement('div');
+  overlay.id = 'trailer-overlay';
+  overlay.innerHTML = `
+    <div class="trailer-wrapper">
+      <button class="trailer-close" id="trailer-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="trailer-loading" id="trailer-loading">
+        <div class="trailer-spinner"></div>
+        <p>Carregando trailer...</p>
+      </div>
+      <div class="trailer-iframe-wrap" id="trailer-iframe-wrap"></div>
+      <div class="trailer-no-video" id="trailer-no-video" style="display:none;">
+        <i class="fas fa-film"></i>
+        <p>Trailer não disponível para este título.</p>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+
+  document.getElementById('trailer-close')?.addEventListener('click', closeTrailer);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeTrailer();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeTrailer();
+  });
+}
+
+async function openTrailer(id, type, title) {
+  const overlay = document.getElementById('trailer-overlay');
+  if (!overlay) return;
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const loading = document.getElementById('trailer-loading');
+  const iframeWrap = document.getElementById('trailer-iframe-wrap');
+  const noVideo = document.getElementById('trailer-no-video');
+
+  loading.style.display = 'flex';
+  iframeWrap.innerHTML = '';
+  noVideo.style.display = 'none';
+
+  const key = await fetchTrailer(id, type);
+
+  loading.style.display = 'none';
+
+  if (key) {
+    iframeWrap.innerHTML = `
+      <iframe
+        src="https://www.youtube.com/embed/${key}?autoplay=1&controls=1&rel=0&modestbranding=1"
+        title="${title || 'Trailer'}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        allowfullscreen
+      ></iframe>
+    `;
+  } else {
+    noVideo.style.display = 'flex';
+  }
+}
+
+function closeTrailer() {
+  const overlay = document.getElementById('trailer-overlay');
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  /* para o vídeo ao fechar */
+  const iframeWrap = document.getElementById('trailer-iframe-wrap');
+  if (iframeWrap) iframeWrap.innerHTML = '';
+}
+
+/* ============================================================
    FETCH DE FILEIRA
    ============================================================ */
 async function fetchRow(url, rowId, isLarge = false) {
@@ -43,6 +149,8 @@ async function fetchRow(url, rowId, isLarge = false) {
       img.dataset.desc     = movie.overview || '';
       img.dataset.backdrop = movie.backdrop_path ? IMG_BASE + movie.backdrop_path : '';
       img.dataset.year     = (movie.first_air_date || movie.release_date || '').slice(0, 4);
+      img.dataset.id       = movie.id;
+      img.dataset.type     = movie.media_type || (movie.first_air_date ? 'tv' : 'movie');
 
       img.loading = 'lazy';
       row.appendChild(img);
@@ -73,12 +181,16 @@ function setBanner(movie) {
     ? IMG_BASE + movie.poster_path
     : IMG_BASE + (movie.backdrop_path || movie.poster_path);
 
-  banner.style.backgroundImage =
-    `url(${imgPath})`;
+  banner.style.backgroundImage = `url(${imgPath})`;
 
   title.textContent = movie.name || movie.title || '';
   desc.textContent  = movie.overview || '';
   if (year) year.textContent = (movie.first_air_date || movie.release_date || '').slice(0, 4);
+
+  /* guarda id/type no banner para o botão assistir */
+  banner.dataset.id   = movie.id;
+  banner.dataset.type = movie.media_type || (movie.first_air_date ? 'tv' : 'movie');
+  banner.dataset.title = movie.name || movie.title || '';
 }
 
 /* ============================================================
@@ -119,6 +231,16 @@ function openModal(movie) {
   document.getElementById('modal-year').textContent    = movie.year;
   document.getElementById('modal-backdrop').style.backgroundImage =
     movie.backdrop ? `url(${movie.backdrop})` : 'none';
+
+  /* botão Assistir dentro do modal */
+  const modalPlayBtn = document.querySelector('.modal-buttons .btn-play');
+  if (modalPlayBtn) {
+    modalPlayBtn.onclick = () => {
+      closeModal();
+      openTrailer(movie.id, movie.type, movie.title);
+    };
+  }
+
   modalOverlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -142,24 +264,24 @@ document.addEventListener('click', e => {
     desc:     poster.dataset.desc,
     backdrop: poster.dataset.backdrop,
     year:     poster.dataset.year,
+    id:       poster.dataset.id,
+    type:     poster.dataset.type,
   });
 });
 
 /* ============================================================
-   BOTÃO ASSISTIR
+   BOTÃO ASSISTIR — BANNER
    ============================================================ */
 const btnPlay = document.getElementById('btn-play-main');
 if (btnPlay) {
   btnPlay.addEventListener('click', () => {
-    const orig = btnPlay.innerHTML;
-    btnPlay.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Carregando...</span>';
-    btnPlay.style.pointerEvents = 'none';
-    btnPlay.style.opacity = '0.75';
-    setTimeout(() => {
-      btnPlay.innerHTML = orig;
-      btnPlay.style.pointerEvents = '';
-      btnPlay.style.opacity = '';
-    }, 2000);
+    const banner = document.getElementById('main-banner');
+    const id     = banner?.dataset.id;
+    const type   = banner?.dataset.type || 'movie';
+    const title  = banner?.dataset.title || '';
+
+    if (!id) return;
+    openTrailer(id, type, title);
   });
 }
 
@@ -192,12 +314,11 @@ drawerOverlay?.addEventListener('click', () => toggleDrawer(false));
 /* ============================================================
    BUSCA + FILTRO
    ============================================================ */
-const searchInput   = document.getElementById('movie-search');
-const mobileSearch  = document.getElementById('mobile-search');
-const mobileFilter  = document.getElementById('mobile-category-filter');
+const searchInput     = document.getElementById('movie-search');
+const mobileSearch    = document.getElementById('mobile-search');
+const mobileFilter    = document.getElementById('mobile-category-filter');
 const searchContainer = document.getElementById('search-container');
 
-/* toggle busca desktop */
 document.getElementById('search-icon')?.addEventListener('click', () => {
   searchContainer.classList.toggle('open');
   if (searchContainer.classList.contains('open')) {
@@ -253,6 +374,8 @@ window.addEventListener('resize', () => {
    INIT
    ============================================================ */
 async function init() {
+  createTrailerPlayer();
+
   const [originals] = await Promise.all([
     fetchRow(requests.originals, 'originals-row', true),
     fetchRow(requests.trending,  'trending-row'),
